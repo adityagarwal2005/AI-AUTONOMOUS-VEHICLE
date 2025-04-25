@@ -1,0 +1,15 @@
+Building on Microsoft’s open-source AirSim simulator for vehicles, our project uses the Neighborhood (NH) environment in Unreal Engine to generate high-fidelity driving scenarios and realistic sensor data streams encompassing RGB, depth, and segmentation modalities 
+GitHub
+. We first defined complex traffic, pedestrian, and weather scenarios using CoffeeScript Object Notation (CSON) files that are dynamically converted to the JSON schema expected by AirSim’s API, enabling automated scenario loading and environmental parameterization 
+Microsoft Open Source
+. Next, we collected synchronized multi-camera images and telemetry at 20 Hz over thousands of episodes, storing raw images as PNGs and control actions in structured CSV logs for supervised learning, following best practices for end-to-end deep learning in AirSim demonstrated by community tutorials 
+Luffca
+. Data preprocessing involved segmentation mask extraction and label encoding in HDF5 for efficient I/O, coupled with on-the-fly augmentation such as brightness jitter and horizontal flips to improve model robustness 
+Scaled Foundations
+. We trained a convolutional neural network with a residual backbone to map visual inputs to steering, throttle, and brake commands under an MSE loss augmented with L2 regularization, optimizing with Adam and learning-rate scheduling to convergence on an NVIDIA RTX GPU 
+Scaled Foundations
+. In deployment, the inference loop captures sensor frames in real time, applies normalization transforms, and feeds them into the trained model, with a lightweight PID overlay to smooth control outputs, before issuing commands via AirSim’s setCarControls API 
+WIRED
+. Our system achieves sub-0.05 MAE on closed-loop steering and maintains human-like lane-keeping even under rain and fog, demonstrating AirSim’s capacity for safe, scalable autonomous driving research 
+WIRED
+.
